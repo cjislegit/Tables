@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var maxTable = 12
+    @State private var score = 0
+    @State private var round = 1
     
     struct Question {
         let table: Int
@@ -25,10 +27,12 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Multiplication Practice")
+            Picker("Up to What Table?", selection: $maxTable) {
+                ForEach(0..<13) {
+                    Text("\($0)")
+                }
+            }
         }
         .onAppear(perform: StartGame)
         .padding()
