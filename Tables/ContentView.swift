@@ -11,6 +11,9 @@ struct ContentView: View {
     @State private var maxTable = 12
     @State private var score = 0
     @State private var round = 1
+    @State private var gameStarted = false
+    @State private var answer: Int?
+    @State private var gameQuestions: [Question] = []
     
     struct Question {
         let table: Int
@@ -26,16 +29,28 @@ struct ContentView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Multiplication Practice")
-            Picker("Up to What Table?", selection: $maxTable) {
-                ForEach(0..<13) {
-                    Text("\($0)")
+        if !gameStarted {
+            VStack {
+                Text("Multiplication Practice")
+                
+                Picker("Up to What Table?", selection: $maxTable) {
+                    ForEach(1..<13) {
+                        Text("\($0)")
+                    }
+                }
+                .pickerStyle(.wheel)
+                
+                Button("Start") {
+                    StartGame()
                 }
             }
+            .padding()
+        } else {
+            VStack {
+//                Text(randomQuestion.text)
+            }
         }
-        .onAppear(perform: StartGame)
-        .padding()
+       
     }
     
     func StartGame() {
@@ -53,12 +68,13 @@ struct ContentView: View {
                     return Question(table: table, mutilpier: multiplier)
                 }
                 
-                let allowedQuestions = questionObject.filter {
+                gameQuestions = questionObject.filter {
                     $0.table <= maxTable
                 }
                 
-                let randomQuestion = allowedQuestions.randomElement()!
-                print(randomQuestion.text)
+//                let randomQuestion = allowedQuestions.randomElement()!
+                print(gameQuestions)
+                gameStarted.toggle()
             }
         }
     }
