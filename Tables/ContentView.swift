@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var gameStarted = false
     @State private var answer: Int?
     @State private var gameQuestions: [Question] = []
+    @State private var gameQuestion: Question?
     
     struct Question {
         let table: Int
@@ -47,7 +48,11 @@ struct ContentView: View {
             .padding()
         } else {
             VStack {
-//                Text(randomQuestion.text)
+                Text(gameQuestion?.text ?? "")
+                TextField("Answer", value: $answer, format: .number)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center)
+                    
             }
         }
        
@@ -73,7 +78,7 @@ struct ContentView: View {
                 }
                 
 //                let randomQuestion = allowedQuestions.randomElement()!
-                print(gameQuestions)
+                gameQuestion = gameQuestions.randomElement()!
                 gameStarted.toggle()
             }
         }
