@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var answer: Int?
     @State private var gameQuestions: [Question] = []
     @State private var gameQuestion: Question?
+    @State private var showAnswerAlert = false
+    @State private var answerAlertMessage = ""
     
     struct Question {
         let table: Int
@@ -52,7 +54,14 @@ struct ContentView: View {
                 TextField("Answer", value: $answer, format: .number)
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.center)
+                Button("Submit Answer") {
+                    SubmitAnswer()
+                }
+                .alert("Test", isPresented: $showAnswerAlert) {
                     
+                } message: {
+                    Text(answerAlertMessage)
+                }
             }
         }
        
@@ -82,6 +91,21 @@ struct ContentView: View {
                 gameStarted.toggle()
             }
         }
+    }
+    
+    func SubmitAnswer() {
+        if gameQuestion.map(\.answer) == answer {
+            score += 1
+            answerAlertMessage = "You got it dude! Your score is now \(score)"
+        } else {
+            
+            if let correctAnswer = gameQuestion {
+                answerAlertMessage = "You is dumb! The correct answer is \(correctAnswer.answer)"
+            } else {
+                answerAlertMessage = "Something went wrong. No answer found."
+            }
+        }
+        showAnswerAlert.toggle()
     }
 }
 
