@@ -37,8 +37,9 @@ struct ContentView: View {
                 Text("Multiplication Practice")
                 
                 Picker("Up to What Table?", selection: $maxTable) {
-                    ForEach(1..<13) {
+                    ForEach(2..<13) {
                         Text("\($0)")
+                            .tag($0)
                     }
                 }
                 .pickerStyle(.wheel)
@@ -57,7 +58,11 @@ struct ContentView: View {
                 Button("Submit Answer") {
                     SubmitAnswer()
                 }
-                .alert("Test", isPresented: $showAnswerAlert) {
+                .alert("", isPresented: $showAnswerAlert) {
+                    
+                    Button("Next Question") {
+                        NextQuestion()
+                    }
                     
                 } message: {
                     Text(answerAlertMessage)
@@ -106,6 +111,11 @@ struct ContentView: View {
             }
         }
         showAnswerAlert.toggle()
+    }
+    
+    func NextQuestion() {
+        gameQuestion = gameQuestions.randomElement()!
+        answer = nil
     }
 }
 
